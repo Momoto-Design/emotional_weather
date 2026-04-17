@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>感情天気図</title>
+		<meta name="description" content="今日の気持ちを、空模様のようにそっと記録できる感情記録アプリ「感情天気図」。" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="感情天気図" />
+		<meta property="og:description" content="今日の気持ちを、空模様のようにそっと記録できる感情記録アプリ。" />
+		<meta property="og:image" content="https://app.potepote.info/emotional_weather/assets/images/ogp.png" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:locale" content="ja_JP" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="感情天気図" />
+		<meta name="twitter:description" content="今日の気持ちを、空模様のようにそっと記録できる感情記録アプリ。" />
+		<meta name="twitter:image" content="https://app.potepote.info/emotional_weather/assets/images/ogp.png" />
+		<link rel="icon" href="assets/favicon/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="assets/style.css" />
+	</head>
+	<body>
+		<div class="app">
+			<!-- Header Area -->
+			<header class="header">
+				<div class="header__sky" aria-hidden="true">
+					<span class="header__sun-glow"></span>
+					<span class="header__cloud header__cloud--left"></span>
+					<span class="header__cloud header__cloud--right"></span>
+				</div>
+				<p class="header__eyebrow">Daily Emotional Weather</p>
+				<h1>感情天気図</h1>
+				<p class="header__lead">今日の気持ちを、空模様のようにそっと残しましょう。</p>
+			</header>
+
+			<!-- Monthly Summary Area -->
+			<section class="monthly-summary" aria-label="Monthly emotion summary">
+				<div class="summary-card">
+					<p class="summary-card__label">今月の記録</p>
+					<strong id="summaryTotal">0日</strong>
+				</div>
+				<div class="summary-list" id="summaryList"></div>
+			</section>
+
+			<!-- Calendar Area -->
+			<main class="main-card" id="calendarArea">
+				<section class="calendar-header" aria-label="Calendar navigation">
+					<button class="nav-button" id="prevMonthButton" type="button" aria-label="前月へ">‹</button>
+					<div class="calendar-title">
+						<h2 id="currentMonthLabel">2026年4月</h2>
+						<button class="today-button" id="todayButton" type="button">今日に戻る</button>
+					</div>
+					<button class="nav-button" id="nextMonthButton" type="button" aria-label="次月へ">›</button>
+				</section>
+
+				<section class="weekday-grid" aria-label="Weekdays">
+					<span>日</span>
+					<span>月</span>
+					<span>火</span>
+					<span>水</span>
+					<span>木</span>
+					<span>金</span>
+					<span>土</span>
+				</section>
+
+				<section class="calendar-grid" id="calendarGrid" aria-label="Monthly calendar"></section>
+			</main>
+
+			<!-- Emotion Input Modal Area -->
+			<div
+				class="input-modal is-hidden"
+				id="inputModal"
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="selectedDateLabel"
+			>
+				<div class="input-modal__overlay" id="inputModalOverlay"></div>
+				<section class="input-panel" id="inputPanel" aria-label="Emotion input area">
+					<button class="modal__close" id="closeInputButton" type="button" aria-label="入力モーダルを閉じる">×</button>
+					<div class="input-panel__top">
+						<p class="panel-kicker">Record</p>
+						<h2 id="selectedDateLabel">選択した日付</h2>
+					</div>
+
+					<div class="emotion-options" id="emotionOptions" aria-label="Emotion weather options">
+						<button class="emotion-button" type="button" data-emoji="☀">
+							<img class="emotion-button__emoji" src="assets/images/sun.png" alt="" />
+							<span class="emotion-button__label">晴れ</span>
+						</button>
+						<button class="emotion-button" type="button" data-emoji="☁">
+							<img class="emotion-button__emoji" src="assets/images/cloudy.png" alt="" />
+							<span class="emotion-button__label">くもり</span>
+						</button>
+						<button class="emotion-button" type="button" data-emoji="☔">
+							<img class="emotion-button__emoji" src="assets/images/rain.png" alt="" />
+							<span class="emotion-button__label">雨</span>
+						</button>
+						<button class="emotion-button" type="button" data-emoji="⚡">
+							<img class="emotion-button__emoji" src="assets/images/thunder.png" alt="" />
+							<span class="emotion-button__label">雷</span>
+						</button>
+					</div>
+
+					<label class="memo-label" for="commentInput">一言メモ</label>
+					<textarea id="commentInput" rows="4" placeholder="例：ちょっと元気だった"></textarea>
+
+					<div class="form-actions">
+						<button class="primary-button" id="saveButton" type="button">登録</button>
+						<button class="danger-button is-hidden" id="deleteButton" type="button">削除</button>
+						<button class="secondary-button" id="backButton" type="button">戻る</button>
+					</div>
+				</section>
+			</div>
+
+			<!-- Modal Area -->
+			<div class="modal is-hidden" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalDate">
+				<div class="modal__overlay" id="modalOverlay"></div>
+				<section class="modal__content">
+					<button class="modal__close" id="closeModalButton" type="button" aria-label="モーダルを閉じる">×</button>
+					<p class="panel-kicker">Saved Weather</p>
+					<h2 id="modalDate">保存した日付</h2>
+					<div class="modal__emoji" id="modalEmoji"></div>
+					<p class="modal__label" id="modalEmotionLabel">晴れ</p>
+					<p class="modal__comment" id="modalComment"></p>
+				</section>
+			</div>
+
+			<!-- Footer Area -->
+			<footer class="footer">
+				<p>記録はこの端末に保存されます</p>
+			</footer>
+		</div>
+
+		<script src="assets/script.js"></script>
+	</body>
+</html>
